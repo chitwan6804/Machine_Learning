@@ -81,8 +81,6 @@ def adaBoostTrainDS(dataArr, classLabels, numIt=40):
 
     return weakClassArr, aggClassEst
 
-
-
 def plotROC(predStrengths, classLabels):
     cur = (1.0, 1.0)  # Cursor
     ySum = 0.0  # Variable to calculate AUC
@@ -93,7 +91,8 @@ def plotROC(predStrengths, classLabels):
     fig = plt.figure()
     fig.clf()
     ax = plt.subplot(111)
-    for index in sortedIndicies.tolist()[0]:
+    
+    for index in sortedIndicies.A1:  # Ensure sortedIndicies is a flat array
         if classLabels[index] == 1.0:
             delX = 0
             delY = yStep
@@ -103,6 +102,7 @@ def plotROC(predStrengths, classLabels):
             ySum += cur[1]
         ax.plot([cur[0], cur[0] - delX], [cur[1], cur[1] - delY], c='b')
         cur = (cur[0] - delX, cur[1] - delY)
+    
     ax.plot([0, 1], [0, 1], 'b--')
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
@@ -111,8 +111,6 @@ def plotROC(predStrengths, classLabels):
     plt.show()
     print("The Area Under the Curve is: ", ySum * xStep)
 
-dataArr,labelArr = loadDataSet(r'ADABOOST/horseColicTraining2.txt')
-classifierArray, aggClassEst = adaBoostTrainDS(dataArr, labelArr, 10)
-
-# Plot the ROC curve
-plotROC(aggClassEst, labelArr)
+datArr,labelArr = loadDataSet(r'ADABOOST\HorseColic\input\horseColicTraining2.txt')
+classifierArray,aggClassEst = adaBoostTrainDS(datArr,labelArr,10)
+plotROC(aggClassEst.T,labelArr)
